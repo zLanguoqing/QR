@@ -9,4 +9,6 @@ void Hessenberg(double a[], int n);
 int HessenbergQR(double a[],int n,double u[],double v[],double eps,int Iteration);
 void Mul(double a[],double b[],int m,int n,int k,double c[]);
 int Inv(double a[],int n);
+double Det(double a[], int n);
+int Rank(double a[],int m,int n);
 #endif

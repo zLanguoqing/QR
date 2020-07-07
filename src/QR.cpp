@@ -451,3 +451,141 @@ int Inv(double a[], int n)
             }
     }
 }
+
+/* 一般行列式的值
+a 方阵
+n 方阵的阶数
+ */
+double Det(double a[], int n)
+{
+    int i, j, k, is, js, l, u, v;
+    double f, det, q, d;
+    f = 1.0;
+    det = 1.0;
+    for (k = 0; k <= n - 2; k++)
+    {
+        q = 0.0;
+        for (i = k; i <= n - 1; i++)
+            for (j = k; j <= n - 1; j++)
+            {
+                l = i * n + j;
+                d = fabs(a[l]);
+                if (d > q)
+                {
+                    q = d;
+                    is = i;
+                    js = j;
+                }
+            }
+        if (q + 1.0 == 1.0)
+        {
+            det = 0.0;
+            return (det);
+        }
+        if (is != k)
+        {
+            f = -f;
+            for (j = k; j <= n - 1; j++)
+            {
+                u = k * n + j;
+                v = is * n + j;
+                d = a[u];
+                a[u] = a[v];
+                a[v] = d;
+            }
+        }
+        if (js != k)
+        {
+            f = -f;
+            for (i = k; i <= n - 1; i++)
+            {
+                u = i * n + js;
+                v = i * n + k;
+                d = a[u];
+                a[u] = a[v];
+                a[v] = d;
+            }
+        }
+        l = k * n + k;
+        det = det * a[l];
+        for (i = k + 1; i <= n - 1; i++)
+        {
+            d = a[i * n + k] / a[l];
+            for (j = k + 1; j <= n - 1; j++)
+            {
+                u = i * n + j;
+                a[u] = a[u] - d * a[k * n + j];
+            }
+        }
+    }
+    det = f * det * a[n * n - 1];
+    return det;
+}
+
+/*
+求矩阵的秩
+a 输入矩阵
+m 矩阵的行数
+n 矩阵的列数
+ */
+int Rank(double a[],int m,int n)
+{
+    int i,j,k,nn,is,js,l,ll,u,v;
+    double q,d;
+    nn= m;
+    if(m >= n)
+        nn =n;
+    k = 0;
+    for(l = 0; l <= nn-1; l++)
+    {
+        q =0.0;
+        for(i = l; i<= m-1;i++)
+        for(j = l; j <= n-1; j++)
+        {
+            ll = i*n+j;
+            d = fabs(a[ll]);
+            if(d > q)
+            {
+                q =d;
+                is = i;
+                js = j;
+            }
+        }
+        if(q +1.0 == 1.0)
+            return k;
+        k = k+1;
+        if(is != l)
+        {
+            for(j = l; j <=n-1;j++)
+            {
+                u = l *n+j;
+                v = is*n+j;
+                d = a[u];
+                a[u] = a[v];
+                a[v] = d;
+            }
+        }
+        if( js != l)
+        {
+            for(i = l; i <=m-1;i++)
+            {
+                u = i*n+js;
+                v = i*n+l;
+                d = a[u];
+                a[u] = a[v];
+                a[v]= d;
+            }
+        }
+        ll = l*n+l;
+        for(i = l+1; i <= n-1;i++)
+        {
+            d = a[i*n+l]/a[ll];
+            for(j = l+1; j <= n-1;j++)
+            {
+                u = i*n+j;
+                a[u] = a[u] - d*a[l*n+j];
+            }
+        }
+    }
+    return k;
+}
